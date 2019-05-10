@@ -1,0 +1,35 @@
+#Be sure that the DataPrep file was followed first.
+
+total2 <- total %>% select(launch_speed, launch_angle, release_speed, batter, Pitch_ID, Color, Angle, Texture, Light, Height, Width)
+total2 %<>% ungroup(batter)
+total2 %<>% mutate(Pitch_ID = as.integer(Pitch_ID), batter = as.integer(batter))
+
+#Splitting data is not as necessary if you are not trying to use your model for prediction. 
+#set.seed(100)
+#train.sample.speed <- sample.split(total2, SplitRatio = 0.8)
+#train.data.speed <- total2[train.sample.speed,]
+#test.data.speed <- total2[-train.sample.speed,]
+
+#set.seed(100)
+#train.sample.angle <- sample.split(total2, SplitRatio = 0.8)
+#train.data.angle <- total2[train.sample.angle,]
+#test.data.angle <- total2[-train.sample.angle,]
+
+
+#Not correct model but interesting results
+fixed_speed <- plm(launch_speed ~ Color + Texture + Angle + Light + Height + Width + release_speed, data = total2, index = c("batter", "Pitch_ID"), model = "within")
+summary(fixed_speed)
+
+ 
+random_speed <- plm(launch_speed ~ Color + Texture + Angle + Light + Height + Width + release_speed, data = total2, index = c("batter", "Pitch_ID"), model = "random")
+summary(random_speed)
+stargazer::stargazer(random_speed)
+
+
+random_angle <- plm(launch_angle ~ Color + Texture + Angle + Light + Height + Width + release_speed, data = total2, index = c("batter", "Pitch_ID"), model = "random")
+summary(random_angle)
+stargazer::stargazer(random_angle)
+
+#Not correct model but interesting results
+fixed_angle <- plm(launch_angle ~ Color + Texture + Angle + Light + Height + Width + release_speed, data = total2, index = c("batter", "Pitch_ID"), model = "within")
+summary(fixed_angle)
