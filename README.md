@@ -2,7 +2,7 @@ The Effects of the Batter's Eye on Hitting Quality
 
 Hello and thank you for stumbling upon the early stages of my thesis.
 
-If you want to read about what I have working on, feel free to look at the Gillingham_Econ_Project.pdf.   
+If you want to read about what I have been working on, feel free to look at the Gillingham_Econ_Project.pdf.   
 
 If you are wanting to recreate my results, however, you will have to do a little bit of data collection yourself. GitHub will not allow me to upload files larger than 25 MB, and this thesis is looking at every pitch thrown in the MLB from 2017-2018. You may want to take a moment to consider your computing power, because you will be working with about 1.4 million rows of data. 
 
