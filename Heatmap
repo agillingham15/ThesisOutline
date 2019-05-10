@@ -1,0 +1,16 @@
+#Be sure that the DataPrep file was followed first.
+
+# Not all columns are used but 30,31 are the (x,y) coordinates of the ball 
+map <- total %>% select (1,30,31,54,55,72)
+map <- map[!(map$launch_speed < 100),]
+
+#Allows you to see what the pitches are called and can change KN to what ever you want. 
+table(map$pitch_type)
+
+map <- map[map$pitch_type == "KN",]
+
+
+ggplot(map, aes(x=plate_x, y=plate_z) ) +
+  stat_density_2d(aes(fill = ..level..), geom = "polygon")
+
+
