@@ -1,0 +1,50 @@
+#Be sure that the DataPrep file was followed first.
+
+
+#You will need to do some data manipulation but not as much as the launch_speed and launch_angle research questions. 
+swing <- total
+
+#I am leaving out bunts, pitchouts and HBP. You can leave them in if you want. 
+swing$swing_event<-NA
+swing%<>% mutate(swing_event = replace(swing_event,description == "ball", 0))
+swing%<>% mutate(swing_event = replace(swing_event,description == "blocked_ball", 0))
+swing%<>% mutate(swing_event = replace(swing_event,description == "called_strike", 0))
+swing%<>% mutate(swing_event = replace(swing_event,description == "foul", 1))
+swing%<>% mutate(swing_event = replace(swing_event,description == "foul_bunt", NA))
+swing%<>% mutate(swing_event = replace(swing_event,description == "foul_pitchout", NA))
+swing%<>% mutate(swing_event = replace(swing_event,description == "foul_tip", 1))
+swing%<>% mutate(swing_event = replace(swing_event,description == "hit_by_pitch", NA))
+swing%<>% mutate(swing_event = replace(swing_event,description == "hit_into_play", 1))
+swing%<>% mutate(swing_event = replace(swing_event,description == "hit_into_play_no_out", 1))
+swing%<>% mutate(swing_event = replace(swing_event,description == "hit_into_play_score", 1))
+swing%<>% mutate(swing_event = replace(swing_event,description == "missed_bunt", NA))
+swing%<>% mutate(swing_event = replace(swing_event,description == "pitchout", NA))
+swing%<>% mutate(swing_event = replace(swing_event,description == "swinging_pitchout", NA))
+swing%<>% mutate(swing_event = replace(swing_event,description == "swinging_strike", 1))
+swing%<>% mutate(swing_event = replace(swing_event,description == "swinging_strike_blocked", 1))
+
+
+
+swing2 <- swing %>% select (1,15, 90:97)
+swing2 %<>% mutate(zone = as.factor(zone))
+
+#Splitting data is not as necessary if you are not trying to use your model for prediction. 
+#set.seed(100)
+#training.samples <- sample.split(swing2, SplitRatio = 0.8)
+#train.data <- swing2[training.samples,]
+#test.data <- swing2[-training.samples,]
+     
+swing_test <- glm(swing_event ~ Color + Texture + Angle + Light + Height + Width + zone + pitch_type, data = swing2, family=binomial)
+summary(swing_test)
+summary(swing_test)$coeff
+stargazer::stargazer(swing_test)
+
+#predict_swing = predict(swing_test, type = "response")
+#summary(predict_swing) 
+
+
+
+
+
+
+
